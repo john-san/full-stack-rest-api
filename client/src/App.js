@@ -1,5 +1,6 @@
 import React from 'react';
-import CourseList from './components/CourseList';
+import Header from './components/Header';
+import Courses from './components/Courses';
 import './styles/App.css';
 // import {
 //   BrowserRouter as Router,
@@ -10,9 +11,10 @@ import './styles/App.css';
 const App = () => {
   return (
     <div className="App">
-      <h1>React App</h1>
-
-      <CourseList />
+      <Header />
+      <hr />
+      
+      <Courses />
     </div>
   );
 }
