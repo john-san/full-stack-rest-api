@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import FormErrors from './FormErrors';
+import CourseFormActions from './CourseFormActions';
 import axios from 'axios';
 import config from '../../config';
 
@@ -8,44 +9,49 @@ class CourseForm extends Component {
     super(props);
     
     this.state = {
-      title: this.props.course.title || "",
-      description: "",
-      estimatedTime: "",
-      materialsNeeded: "",
-      errors: []
+      errors: [],
+      location: this.props.match.url.split("/").pop()
     }
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    console.log(this.props);
+    const inputs = ['title', 'description', 'estimatedTime', 'materialsNeeded'];
+    inputs.forEach(input => this[input] = React.createRef());
   }
-
-    // https://reactjs.org/docs/forms.html
-    handleInputChange(event) {
-      const target = event.target;
-      const value = target.type === 'checkbox' ? target.checked : target.value;
-      const name = target.name;
-
-      this.setState({
-        [name]: value
-      });
-    }
 
    handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const body = { userId: 1, ...this.state };
+      let url = `${config.apiBaseUrl}/courses`;
+      let method = 'post';
+      const body = { 
+        userId: 1, 
+        title: this.title.current.value,
+        description: this.description.current.value,
+        estimatedTime: this.estimatedTime.current.value,
+        materialsNeeded: this.materialsNeeded.current.value
+      };
 
+      
+      if (this.state.location === "update") { 
+        url += `/${this.props.match.params.id}`;
+        method = 'put';
+      }
       const response = await axios({
-        method: 'post',
-        url: config.apiBaseUrl + "/courses",
+        method,
+        url,
         data: body,
         auth: {
           username: 'joe@smith.com',
           password: 'joepassword'
         }
       });
+
       console.log("Success! ", response);
-      this.props.history.push("/");
+      if (this.state.location === "update") {
+        this.props.history.push(`/courses/${this.props.match.params.id}/view`);
+      } else {
+        this.props.history.push("/");
+      }
+      
     } catch (err) {
       this.handleError(err);
     }
@@ -61,14 +67,8 @@ class CourseForm extends Component {
   render() {
     return (
       <div>
-
-        {
-          this.state.errors.length > 0 ?
-            <FormErrors errors={this.state.errors} />
-          :
-            false
-        }
-
+        <FormErrors errors={this.state.errors} />
+        
         <form onSubmit={this.handleSubmit}>
           <div className="grid-66">
             <div className="course--header">
@@ -80,8 +80,8 @@ class CourseForm extends Component {
                   type="text" 
                   className="input-title course--title--input" 
                   placeholder="Course title..." 
-                  value={this.state.title} 
-                  onChange={this.handleInputChange}
+                  ref={this.title}
+                  defaultValue={this.props.course ? this.props.course.title : ""}
                 />
               </div>
               <p>By Joe Smith</p>
@@ -94,8 +94,8 @@ class CourseForm extends Component {
                   name="description" 
                   className="" 
                   placeholder="Course description..."
-                  value={this.state.description}
-                  onChange={this.handleInputChange}  
+                  ref={this.description}
+                  defaultValue={this.props.course ? this.props.course.description : ""}
                 >
                 </textarea>
               </div>
@@ -114,8 +114,8 @@ class CourseForm extends Component {
                       type="text" 
                       className="course--time--input" 
                       placeholder="Hours" 
-                      value={this.state.estimatedTime}
-                      onChange={this.handleInputChange}
+                      ref={this.estimatedTime}
+                      defaultValue={this.props.course ? this.props.course.estimatedTime : ""}
                     />
                   </div>
                 </li>
@@ -127,7 +127,8 @@ class CourseForm extends Component {
                       name="materialsNeeded" 
                       className="" 
                       placeholder="List materials..."
-                      onChange={this.handleInputChange} 
+                      ref={this.materialsNeeded}
+                      defaultValue={this.props.course ? this.props.course.materialsNeeded : ""}
                     >
                     </textarea>
                   </div>
@@ -136,10 +137,10 @@ class CourseForm extends Component {
             </div>
           </div>
     
-          <div className="grid-100 pad-bottom">
-            <button className="button" type="submit">Create Course</button>
-            <a className="button button-secondary" href="/">Cancel</a>
-          </div>
+          <CourseFormActions
+            location={this.state.location}
+            match={this.props.match}
+          />
     
         </form>
 

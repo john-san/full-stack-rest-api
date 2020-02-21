@@ -6,7 +6,10 @@ const CreateCourse = (props) => {
     <div className="bounds course--detail">
       <h1>Create Course</h1>
 
-      <CourseForm history={props.history} />
+      <CourseForm 
+        match={props.match} 
+        history={props.history}
+      />
     </div>
   );
 }

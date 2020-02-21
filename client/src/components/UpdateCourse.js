@@ -25,7 +25,11 @@ class UpdateCourse extends Component {
       <div className="bounds course--detail">
         <h1>Update Course</h1>
         
-        <CourseForm course={this.state.course} />
+        <CourseForm 
+          match={this.props.match} 
+          history={this.props.history}
+          course={this.state.course}   
+        />
       </div>
     );
 
