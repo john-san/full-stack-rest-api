@@ -13,14 +13,33 @@ class CourseDetail extends Component {
     }
 
     this.getCourse();
+
+    this.deleteCourse = this.deleteCourse.bind(this);
   }
 
   async getCourse() {
     const { id } = this.props.match.params;
-  
     const { data } = await axios(config.apiBaseUrl + "/courses/" + id);
-  
     this.setState({ course: data , user: data.User });
+  }
+
+  async deleteCourse() {
+    try {
+      const { id } = this.props.match.params;
+      const url = `${config.apiBaseUrl}/courses/${id}`;
+      const response = await axios.delete(url, {
+        auth: {
+          username: 'joe@smith.com',
+          password: 'joepassword'
+        }
+      });
+
+      console.log("deleted ", response);
+      this.props.history.push("/");
+    } catch(err) {
+      console.log(err);
+    }
+    
   }
   
   render() {
@@ -29,8 +48,8 @@ class CourseDetail extends Component {
         <div className="actions--bar">
           <div className="bounds">
             <div className="grid-100">
-              <a className="button" href="update-course.html">Update Course</a>
-              <a className="button" href="#">Delete Course</a>
+              <a className="button" href={`/courses/update/${this.state.course.id}`}>Update Course</a>
+              <button className="button" onClick={this.deleteCourse}>Delete Course</button>
               <a className="button button-secondary" href="/">Return to List</a>
             </div>
           </div>
