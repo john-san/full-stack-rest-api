@@ -148,9 +148,6 @@ class CourseForm extends Component {
     );
   }
   
-  
-        
-    
 }
 
 export default CourseForm;

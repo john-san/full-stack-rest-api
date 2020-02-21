@@ -1,18 +1,18 @@
 import React from 'react';
 
-const FormErrors = (props) => {
+const FormErrors = ({errors}) => {
   return (
     <div>
       {
-        props.errors.length > 0 ?
+        errors.length ?
           <div className="validation-errors">
             <h2 className="validation--errors--label">Validation errors</h2>
             <ul>
-              {props.errors.map((error, idx) => <li key={idx}>{error}</li>)}
+              {errors.map((error, idx) => <li key={idx}>{error}</li>)}
             </ul>
           </div>
         :
-          false
+          null
       }
     </div>
   );
