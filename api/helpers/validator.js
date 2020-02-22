@@ -23,6 +23,10 @@ const userSignUpValidationRules = () => {
       .withMessage('Please provide a value for "password"')
       .isLength({ min: 6, max: 18 })
       .withMessage('Password must be between 6 and 18 characters'),
+    check('confirmPassword')
+      .exists({ checkNull: true, checkFalsy: true })
+      .withMessage('Please provide a value for "confirmPassword"')
+    .custom(comparePasswords),
   ];
 }
 
@@ -79,6 +83,14 @@ const checkIfEmailExists = async (val) => {
   });
   if (user) {
     return Promise.reject(`The email address "${val}" is already in use by another user.`);
+  }
+};
+
+const comparePasswords = (val, { req }) => {
+  if (val !== req.body.password) {
+    throw new Error('Passwords do not match');
+  } else {
+    return true;
   }
 };
 

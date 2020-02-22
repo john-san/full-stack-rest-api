@@ -11,11 +11,11 @@ class Data {
       }
     };
   
-    // must use data on config obj for axios
+    // set payload.  must use data on config obj for axios
     if (body !== null) {
       options.data = body;
     }
-    console.log(options);
+   
     // Check if auth is required
     if (requiresAuth) {    
       const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
@@ -38,7 +38,7 @@ class Data {
         throw new Error('Something went wrong while trying to retrieve User Data!');
       }
     } catch (err) {
-      // 401 === Invalid credentials
+      // 401 === invalid credentials
       console.log(err.toJSON());
       return null;
     }
@@ -54,8 +54,8 @@ class Data {
         throw new Error("Something went wrong while trying to create a new User!");
       }
     } catch (err) {
-      // 400 === bad request
-      console.log(err);
+      // 400 === bad request, invalid data
+      console.log(err.toJSON());
       return { status: 400, errors: err.response.data };
     }
   }

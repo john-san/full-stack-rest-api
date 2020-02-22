@@ -12,9 +12,9 @@ class UserSignIn extends Component {
     }
   }
   
-  change = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
+  change = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
     this.setState({ [name]: value });
   }
 

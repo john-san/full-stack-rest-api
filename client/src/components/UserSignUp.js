@@ -15,10 +15,9 @@ class UserSignUp extends Component {
     }
   }
   
-  
-  change = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
+  change = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
     this.setState({ [name]: value });
   }
 
@@ -29,7 +28,8 @@ class UserSignUp extends Component {
         firstName,
         lastName,
         emailAddress,
-        password
+        password,
+        confirmPassword
       } = this.state; 
 
       // New user payload
@@ -37,10 +37,10 @@ class UserSignUp extends Component {
         firstName,
         lastName,
         emailAddress,
-        password
+        password,
+        confirmPassword
       };
 
-      console.log(user);
       const response = await context.data.createUser(user);
 
       // Successful Signup
@@ -49,7 +49,6 @@ class UserSignUp extends Component {
         this.props.history.push('/');  
         // Validation Errors
       } else if (response.status === 400) {
-        console.log(response);
         this.handleError(response.errors);
       }
     } catch(err) {
@@ -132,8 +131,6 @@ class UserSignUp extends Component {
               </React.Fragment>
             )}
           />
-        
-          
 
           <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
         </div>
