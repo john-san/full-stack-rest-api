@@ -3,11 +3,15 @@ import { Link } from 'react-router-dom';
 import UserForm from './subcomponents/UserForm';
 
 class UserSignIn extends Component {
-  state = {
-    emailAddress: '',
-    password: '',
-    errors: []
+  constructor(props) {
+    super(props);
+    this.state = {
+      emailAddress: '',
+      password: '',
+      errors: []
+    }
   }
+  
 
   change = (event) => {
     const name = event.target.name;
@@ -20,25 +24,22 @@ class UserSignIn extends Component {
     });
   }
 
-  submit = () => {
-    const { context } = this.props;
-    const { from } = this.props.location.state || { from: { pathname: '/authenticated' } };
-    const { emailAddress, password } = this.state;
-    context.actions.signIn(emailAddress, password)
-      .then( user => {
-        if (user === null) {
-          this.setState(() => {
-            return { errors: [ 'Sign-in was unsuccessful' ] };
-          });
-        } else {
-          this.props.history.push(from);
-          console.log(`SUCCESS! ${emailAddress} is now signed in!`);
-        }
-      })
-      .catch( err => {
-        console.log(err);
-        this.props.history.push('/error');
-      });
+  submit = async () => {
+    try {
+      const { context } = this.props;
+      const { from } = this.props.location.state || { from: { pathname: '/' } };
+      const { emailAddress, password } = this.state;
+      const user = await context.actions.signIn(emailAddress, password);
+      if (user === null) {
+        this.setState({ errors: [ 'Sign-in was unsuccessful' ] });
+      } else {
+        this.props.history.push(from);
+        console.log(`SUCCESS! ${emailAddress} is now signed in!`);
+      }
+    } catch(err) {
+      console.dir(err);
+      this.props.history.push('/error');
+    }
   }
 
   cancel = () => {
@@ -54,8 +55,8 @@ class UserSignIn extends Component {
     } = this.state;
 
     return (
-      <div class="bounds">
-        <div class="grid-33 centered signin">
+      <div className="bounds">
+        <div className="grid-33 centered signin">
           <h1>Sign In</h1>
           <UserForm 
             cancel={this.cancel}
@@ -68,7 +69,6 @@ class UserSignIn extends Component {
                   id="emailAddress" 
                   name="emailAddress" 
                   type="text" 
-                  className=""
                   value={emailAddress}
                   onChange={this.change}
                   placeholder="Email Address" 
@@ -77,7 +77,6 @@ class UserSignIn extends Component {
                   id="password" 
                   name="password" 
                   type="password" 
-                  className="" 
                   value={password}
                   onChange={this.change}
                   placeholder="Password" 
@@ -86,7 +85,7 @@ class UserSignIn extends Component {
             )}
           />
 
-          <p>Don't have a user account? <Link href="/signup">Click here</Link> to sign up!</p>
+          <p>Don't have a user account? <Link to="/signup">Click here</Link> to sign up!</p>
         </div>
       </div>
    );

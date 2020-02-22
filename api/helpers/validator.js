@@ -90,7 +90,7 @@ const checkIfCourseExists = async (val) => {
   });
   if (course) {
     return Promise.reject(`A course titled "${val}" already exists.`);
-  }
+  } 
 };
 
 module.exports = {

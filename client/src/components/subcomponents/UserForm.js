@@ -27,9 +27,9 @@ const UserForm = (props) => {
         <div>
           {elements()}
         </div>
-        <div class="grid-100 pad-bottom">
-          <button class="button" type="submit">{submitButtonText}</button>
-          <button class="button button-secondary" onClick={handleCancel}>Cancel</button>
+        <div className="grid-100 pad-bottom">
+          <button className="button" type="submit">{submitButtonText}</button>
+          <button className="button button-secondary" onClick={handleCancel}>Cancel</button>
         </div>
       </form>
     </div>
