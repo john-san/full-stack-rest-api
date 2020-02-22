@@ -11,10 +11,11 @@ class Data {
       }
     };
   
+    // must use data on config obj for axios
     if (body !== null) {
-      options.body = body;
+      options.data = body;
     }
-
+    console.log(options);
     // Check if auth is required
     if (requiresAuth) {    
       const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
