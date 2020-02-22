@@ -4,7 +4,7 @@
 const express = require('express');
 const bcryptjs = require('bcryptjs');
 const { User } = require('../models');
-const { asyncHandler, authenticateUser, userValidationRules, userUpdateValidationRules, validate } = require('../helpers');
+const { asyncHandler, authenticateUser, userSignUpValidationRules, userUpdateValidationRules, validate } = require('../helpers');
 
 // Construct a router instance.
 const router = express.Router();
@@ -16,7 +16,7 @@ router.get('/', authenticateUser, (req, res) => {
 });
 
 // POST /api/users 201 - Creates a user, sets the Location header to "/", and returns no content
-router.post('/', userValidationRules(), validate, asyncHandler(async (req, res) => {
+router.post('/', userSignUpValidationRules(), validate, asyncHandler(async (req, res) => {
   const user = req.body;
   user.password = bcryptjs.hashSync(user.password);
   await User.create(user);
@@ -36,7 +36,7 @@ router.put('/:id', authenticateUser, userUpdateValidationRules(), validate, asyn
     if (idMatch) {
       await user.update({
         firstName: req.body.firstName,
-        lastName: req.body.lastName
+        lastName: req.body.lastName,
       }, { fields: ['firstName', 'lastName'] });
 
       if (req.body.emailAddress) {

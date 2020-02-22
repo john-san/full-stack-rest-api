@@ -12,32 +12,29 @@ class UserSignIn extends Component {
     }
   }
   
-
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-
-    this.setState(() => {
-      return {
-        [name]: value
-      };
-    });
+    this.setState({ [name]: value });
   }
 
+  // submits request to Context's SignIn()
   submit = async () => {
     try {
       const { context } = this.props;
       const { from } = this.props.location.state || { from: { pathname: '/' } };
       const { emailAddress, password } = this.state;
       const user = await context.actions.signIn(emailAddress, password);
-      if (user === null) {
-        this.setState({ errors: [ 'Sign-in was unsuccessful' ] });
-      } else {
-        this.props.history.push(from);
+
+      // If there is a user, sign them in.  Otherwise, display error
+      if (user !== null) {
         console.log(`SUCCESS! ${emailAddress} is now signed in!`);
+        this.props.history.push(from);
+      } else {
+        this.setState({ errors: [ 'Sign-in was unsuccessful' ] });
       }
     } catch(err) {
-      console.dir(err);
+      console.log(err);
       this.props.history.push('/error');
     }
   }
@@ -45,7 +42,6 @@ class UserSignIn extends Component {
   cancel = () => {
     this.props.history.push('/');
   }
-
 
   render() {
     const {
@@ -69,17 +65,17 @@ class UserSignIn extends Component {
                   id="emailAddress" 
                   name="emailAddress" 
                   type="text" 
+                  placeholder="Email Address" 
                   value={emailAddress}
                   onChange={this.change}
-                  placeholder="Email Address" 
                 />
                 <input 
                   id="password" 
                   name="password" 
                   type="password" 
+                  placeholder="Password" 
                   value={password}
                   onChange={this.change}
-                  placeholder="Password" 
                 />
               </React.Fragment>
             )}

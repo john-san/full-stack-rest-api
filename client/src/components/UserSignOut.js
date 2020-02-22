@@ -3,10 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 const UserSignOut = ({ context }) => {
   context.actions.signOut();
-  
-  return (
-    <Redirect to="/" />
-  );
+  return ( <Redirect to="/" /> );
 }
 
 export default UserSignOut;

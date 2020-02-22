@@ -4,7 +4,7 @@
 const { check, validationResult } = require('express-validator');
 const { sequelize, Course, User } = require('../models');
 
-const userValidationRules = () => {
+const userSignUpValidationRules = () => {
   return [
     check('firstName')
       .exists({ checkNull: true, checkFalsy: true })
@@ -94,7 +94,7 @@ const checkIfCourseExists = async (val) => {
 };
 
 module.exports = {
-  userValidationRules,
+  userSignUpValidationRules,
   userUpdateValidationRules,
   courseValidationRules,
   validate

@@ -3,24 +3,23 @@ import { Link } from 'react-router-dom';
 import UserForm from './subcomponents/UserForm';
 
 class UserSignUp extends Component {
-  state = {
-    firstName: '',
-    lastName: '',
-    emailAddress: '',
-    password: '',
-    confirmPassword: '',
-    errors: [],
+  constructor(props) {
+    super(props);
+    this.state = {
+      firstName: '',
+      lastName: '',
+      emailAddress: '',
+      password: '',
+      confirmPassword: '',
+      errors: [],
+    }
   }
+  
   
   change = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-
-    this.setState(() => {
-      return {
-        [name]: value
-      };
-    });
+    this.setState({ [name]: value });
   }
 
   submit = async () => {
@@ -40,22 +39,23 @@ class UserSignUp extends Component {
         emailAddress,
         password
       };
+
+      console.log(user);
       const response = await context.data.createUser(user);
 
-      // Validation Errors
-      if (response.status === 400) {
-        this.handleError(response.errors);
       // Successful Signup
-      } else if (response.status === 201) {
+      if (response.status === 201) {
         await context.actions.signIn(emailAddress, password);
         this.props.history.push('/');  
+        // Validation Errors
+      } else if (response.status === 400) {
+        console.log(response);
+        this.handleError(response.errors);
       }
     } catch(err) {
       console.dir(err);
       this.props.history.push('/error');
     }
-    
-
   }
 
   handleError(err) {
@@ -79,9 +79,9 @@ class UserSignUp extends Component {
     } = this.state;
 
     return (
-      <div className="grid-33 centered signin">
-        <h1>Sign Up</h1>
-        <div>
+      <div className="bounds">
+        <div className="grid-33 centered signin">
+          <h1>Sign Up</h1>
           <UserForm
             cancel={this.cancel}
             errors={errors}
@@ -132,10 +132,11 @@ class UserSignUp extends Component {
               </React.Fragment>
             )}
           />
-       
-        </div>
+        
+          
 
-        <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
+          <p>Already have a user account? <Link to="/signin">Click here</Link> to sign in!</p>
+        </div>
       </div>
     );
   }

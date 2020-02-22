@@ -14,7 +14,6 @@ class Courses extends Component {
 
   async getCourses() {
     const { data } = await axios(config.apiBaseUrl + "/courses");
-    console.log(data);
     this.setState({ courses: data });
   }
   
