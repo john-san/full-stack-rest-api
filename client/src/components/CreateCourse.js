@@ -1,17 +1,17 @@
 import React from 'react';
 import CourseForm from './subcomponents/CourseForm';
 
-const CreateCourse = (props) => {
+export default ({ match, history }) => {
   return (
     <div className="bounds course--detail">
       <h1>Create Course</h1>
 
       <CourseForm 
-        match={props.match} 
-        history={props.history}
+        match={match} 
+        history={history}
+        submitButtonText="Create Course"
+        method="post"
       />
     </div>
   );
 }
-
-export default CreateCourse;

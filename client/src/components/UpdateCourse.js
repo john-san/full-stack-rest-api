@@ -21,14 +21,18 @@ class UpdateCourse extends Component {
     this.setState({ course: data , user: data.User });
   }
   render() {
+    const { match, history } = this.props;
+    const { course } = this.state;
     return (
       <div className="bounds course--detail">
         <h1>Update Course</h1>
         
         <CourseForm 
-          match={this.props.match} 
-          history={this.props.history}
-          course={this.state.course}   
+          match={match} 
+          history={history}
+          course={course}
+          submitButtonText="Update Course"
+          method="put"
         />
       </div>
     );

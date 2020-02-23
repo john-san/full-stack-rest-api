@@ -1,21 +1,19 @@
 import React from 'react';
 import FormErrors from './FormErrors';
 
-const UserForm = (props) => {
-  const {
-    cancel,
-    errors,
-    submit,
-    submitButtonText,
-    elements
-  } = props;
-
-  function handleSubmit(e) {
+export default ({
+  cancel,
+  errors,
+  submit,
+  submitButtonText,
+  inputFields
+}) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     submit();
   }
 
-  function handleCancel(e) {
+  const handleCancel = (e) => {
     e.preventDefault();
     cancel();
   }
@@ -25,7 +23,7 @@ const UserForm = (props) => {
       <FormErrors errors={errors} />
       <form onSubmit={handleSubmit}>
         <div>
-          {elements()}
+          { inputFields() }
         </div>
         <div className="grid-100 pad-bottom">
           <button className="button" type="submit">{submitButtonText}</button>
@@ -35,5 +33,3 @@ const UserForm = (props) => {
     </div>
   );
 }
-
-export default UserForm;

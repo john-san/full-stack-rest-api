@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import UserForm from './subcomponents/UserForm';
 
@@ -59,8 +59,8 @@ class UserSignIn extends Component {
             errors={errors}
             submit={this.submit}
             submitButtonText="Sign In"
-            elements={() => (
-              <React.Fragment>
+            inputFields={() => (
+              <Fragment>
                 <input 
                   id="emailAddress" 
                   name="emailAddress" 
@@ -77,7 +77,7 @@ class UserSignIn extends Component {
                   value={password}
                   onChange={this.change}
                 />
-              </React.Fragment>
+              </Fragment>
             )}
           />
 

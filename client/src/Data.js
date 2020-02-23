@@ -1,6 +1,7 @@
 import config from './config';
 import axios from 'axios';
 
+// Data class used to fetch data and return it
 class Data {
   api(path, method = 'GET', body = null, requiresAuth = false, credentials = null) {
     const url = config.apiBaseUrl + path;
@@ -11,7 +12,7 @@ class Data {
       }
     };
   
-    // set payload.  must use data on config obj for axios
+    // set payload.  must use config obj's data prop when using axios
     if (body !== null) {
       options.data = body;
     }

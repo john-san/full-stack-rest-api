@@ -50,7 +50,7 @@ const userUpdateValidationRules = () => {
   ];
 }
 
-const courseValidationRules = () => {
+const courseCreateValidationRules = () => {
   return [
     check('title')
       .exists({ checkNull: true, checkFalsy: true })
@@ -59,6 +59,21 @@ const courseValidationRules = () => {
     check('description')
       .exists({ checkNull: true, checkFalsy: true })
       .withMessage('Please provide a value for "description"'),
+    check('estimatedTime')
+      .custom(isInteger)
+  ];
+}
+
+const courseUpdateValidationRules = () => {
+  return [
+    check('title')
+      .exists({ checkNull: true, checkFalsy: true })
+      .withMessage('Please provide a value for "title"'),
+    check('description')
+      .exists({ checkNull: true, checkFalsy: true })
+      .withMessage('Please provide a value for "description"'),
+    check('estimatedTime')
+      .custom(isInteger)
   ];
 }
 
@@ -105,9 +120,19 @@ const checkIfCourseExists = async (val) => {
   } 
 };
 
+const isInteger = (val, { req }) => {
+  const parsedValue = parseInt(req.body.estimatedTime);
+  if (isNaN(parsedValue)) {
+    throw new Error('Please enter a number for estimatedTime');
+  } else {
+    return true;
+  }
+}
+
 module.exports = {
   userSignUpValidationRules,
   userUpdateValidationRules,
-  courseValidationRules,
+  courseCreateValidationRules,
+  courseUpdateValidationRules,
   validate
 };

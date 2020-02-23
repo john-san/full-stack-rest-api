@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import FormErrors from './FormErrors';
-import CourseFormActions from './CourseFormActions';
 import axios from 'axios';
 import config from '../../config';
 
@@ -9,8 +8,7 @@ class CourseForm extends Component {
     super(props);
     
     this.state = {
-      errors: [],
-      location: this.props.match.url.split("/").pop()
+      errors: []
     }
 
     const inputs = ['title', 'description', 'estimatedTime', 'materialsNeeded'];
@@ -19,9 +17,9 @@ class CourseForm extends Component {
 
    handleSubmit = async (e) => {
     try {
+      const { method } = this.props;
       e.preventDefault();
       let url = `${config.apiBaseUrl}/courses`;
-      let method = 'post';
       const body = { 
         userId: 1, 
         title: this.title.current.value,
@@ -30,11 +28,10 @@ class CourseForm extends Component {
         materialsNeeded: this.materialsNeeded.current.value
       };
 
-      
-      if (this.state.location === "update") { 
+      if (method === "put") { 
         url += `/${this.props.match.params.id}`;
-        method = 'put';
       }
+
       const response = await axios({
         method,
         url,
@@ -46,18 +43,18 @@ class CourseForm extends Component {
       });
 
       console.log("Success! ", response);
-      if (this.state.location === "update") {
+      if (method === "put") {
         this.props.history.push(`/courses/${this.props.match.params.id}/view`);
       } else {
         this.props.history.push("/");
       }
       
     } catch (err) {
-      this.handleError(err);
+      this.handleErrors(err);
     }
   }
 
-  handleError(err) {
+  handleErrors(err) {
     const errors = Object.values(err.response.data)[0]
       .map(item => Object.values(item)[0]);
     this.setState({ errors });
@@ -65,40 +62,37 @@ class CourseForm extends Component {
 
 
   render() {
+    const { submitButtonText, course } = this.props;
+    const { errors } = this.state;
     return (
       <div>
-        <FormErrors errors={this.state.errors} />
+        <FormErrors errors={errors} />
         
         <form onSubmit={this.handleSubmit}>
           <div className="grid-66">
             <div className="course--header">
               <h4 className="course--label">Course</h4>
-              <div>
-                <input 
-                  id="title" 
-                  name="title" 
-                  type="text" 
-                  className="input-title course--title--input" 
-                  placeholder="Course title..." 
-                  ref={this.title}
-                  defaultValue={this.props.course ? this.props.course.title : ""}
-                />
-              </div>
+              <input 
+                id="title" 
+                name="title" 
+                type="text" 
+                className="input-title course--title--input" 
+                placeholder="Course title..." 
+                ref={this.title}
+                defaultValue={course ? course.title : ""}
+              />
               <p>By Joe Smith</p>
             </div>
     
             <div className="course--description">
-              <div>
-                <textarea 
-                  id="description" 
-                  name="description" 
-                  className="" 
-                  placeholder="Course description..."
-                  ref={this.description}
-                  defaultValue={this.props.course ? this.props.course.description : ""}
-                >
-                </textarea>
-              </div>
+              <textarea 
+                id="description" 
+                name="description"  
+                placeholder="Course description..."
+                ref={this.description}
+                defaultValue={course ? course.description : ""}
+              >
+              </textarea>
             </div>
           </div>
     
@@ -106,41 +100,38 @@ class CourseForm extends Component {
             <div className="course--stats">
               <ul className="course--stats--list">
                 <li className="course--stats--list--item">
-                  <h4>Estimated Time</h4>
-                  <div>
-                    <input 
-                      id="estimatedTime" 
-                      name="estimatedTime" 
-                      type="text" 
-                      className="course--time--input" 
-                      placeholder="Hours" 
-                      ref={this.estimatedTime}
-                      defaultValue={this.props.course ? this.props.course.estimatedTime : ""}
-                    />
-                  </div>
+                  <h4>Estimated Time (Hours)</h4>
+                  <input 
+                    id="estimatedTime" 
+                    name="estimatedTime" 
+                    type="number" 
+                    className="course--time--input" 
+                    placeholder="Hours" 
+                    ref={this.estimatedTime}
+                    defaultValue={course ? course.estimatedTime : ""}
+                  />
                 </li>
                 <li className="course--stats--list--item">
                   <h4>Materials Needed</h4>
-                  <div>
-                    <textarea 
-                      id="materialsNeeded" 
-                      name="materialsNeeded" 
-                      className="" 
-                      placeholder="List materials..."
-                      ref={this.materialsNeeded}
-                      defaultValue={this.props.course ? this.props.course.materialsNeeded : ""}
-                    >
-                    </textarea>
-                  </div>
+                  <textarea 
+                    id="materialsNeeded" 
+                    name="materialsNeeded" 
+                    placeholder="List materials..."
+                    ref={this.materialsNeeded}
+                    defaultValue={course ? course.materialsNeeded : ""}
+                  >
+                  </textarea>
                 </li>
               </ul>
             </div>
           </div>
     
-          <CourseFormActions
-            location={this.state.location}
-            match={this.props.match}
-          />
+          <div className="grid-100 pad-bottom">
+            <div>
+              <button className="button" type="submit">{submitButtonText}</button>
+              <a className="button button-secondary" href="/">Cancel</a>
+            </div>
+          </div>
     
         </form>
 

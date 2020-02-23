@@ -14,9 +14,13 @@ import withContext from './Context';
 import './styles/App.css';
 
 const HeaderWithContext = withContext(Header);
+const CoursesWithContext = withContext(Courses);
+const CreateCourseWithContext = withContext(CreateCourse);
+const CourseDetailWithContext = withContext(CourseDetail);
+const UpdateCourseWithContext = withContext(UpdateCourse);
 const UserSignInWithContext = withContext(UserSignIn);
-const UserSignOutWithContext = withContext(UserSignOut);
 const UserSignUpWithContext = withContext(UserSignUp);
+const UserSignOutWithContext = withContext(UserSignOut);
 
 const App = () => {
   return (
@@ -26,15 +30,13 @@ const App = () => {
         <hr />
 
         <Switch>
-          <Route exact path="/" component={Courses} />
-          <Route exact path="/courses/new" component={CreateCourse} />
-          <Route path="/courses/:id/view" component={CourseDetail} />
-          <Route path="/courses/:id/update" component={UpdateCourse} />
-
+          <Route exact path="/" component={CoursesWithContext} />
+          <Route exact path="/courses/new" component={CreateCourseWithContext} />
+          <Route path="/courses/:id/view" component={CourseDetailWithContext} />
+          <Route path="/courses/:id/update" component={UpdateCourseWithContext} />
           <Route path="/signin" component={UserSignInWithContext} />
           <Route path="/signup" component={UserSignUpWithContext} />
           <Route path="/signout" component={UserSignOutWithContext} />
-
           <Route component={NotFound} />
         </Switch>
       </div>

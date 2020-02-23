@@ -30,7 +30,12 @@ module.exports = (sequelize) => {
       }
     },
     estimatedTime: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      validate: {
+        isInt: {
+          msg: 'Please provide a valid hour amount'
+        }
+      }
     },
     materialsNeeded: {
       type: Sequelize.STRING

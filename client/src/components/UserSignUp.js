@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import UserForm from './subcomponents/UserForm';
 
@@ -49,15 +49,15 @@ class UserSignUp extends Component {
         this.props.history.push('/');  
         // Validation Errors
       } else if (response.status === 400) {
-        this.handleError(response.errors);
+        this.handleErrors(response.errors);
       }
     } catch(err) {
-      console.dir(err);
+      console.log(err);
       this.props.history.push('/error');
     }
   }
 
-  handleError(err) {
+  handleErrors(err) {
     const errors = Object.values(err)[0]
       .map(item => Object.values(item)[0]);
     this.setState({ errors });
@@ -86,8 +86,8 @@ class UserSignUp extends Component {
             errors={errors}
             submit={this.submit}
             submitButtonText="Sign Up"
-            elements={() => (
-              <React.Fragment>
+            inputFields={() => (
+              <Fragment>
                 <input 
                   id="firstName" 
                   name="firstName" 
@@ -128,7 +128,7 @@ class UserSignUp extends Component {
                   value={confirmPassword}
                   onChange={this.change} 
                 />
-              </React.Fragment>
+              </Fragment>
             )}
           />
 

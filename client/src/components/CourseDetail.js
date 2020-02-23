@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import ReactMarkdown from 'react-markdown';
 import axios from 'axios';
 import config from '../config';
+import CourseActionsBar from './subcomponents/CourseActionsBar';
+import CourseDetailBody from './subcomponents/CourseDetailBody';
 
 class CourseDetail extends Component {
   constructor(props) {
@@ -13,7 +14,6 @@ class CourseDetail extends Component {
     }
 
     this.getCourse();
-
     this.deleteCourse = this.deleteCourse.bind(this);
   }
 
@@ -39,47 +39,25 @@ class CourseDetail extends Component {
     } catch(err) {
       console.log(err);
     }
-    
   }
-  
+
   render() {
+    const { course, user } = this.state;
+    const { authenticatedUser } = this.props.context;
+
     return (
       <div>
-        <div className="actions--bar">
-          <div className="bounds">
-            <div className="grid-100">
-              <a className="button" href={`/courses/${this.state.course.id}/update`}>Update Course</a>
-              <button className="button" onClick={this.deleteCourse}>Delete Course</button>
-              <a className="button button-secondary" href="/">Return to List</a>
-            </div>
-          </div>
-        </div>
-        <div className="bounds course--detail">
-          <div className="grid-66">
-            <div className="course--header">
-              <h4 className="course--label">Course</h4>
-              <h3 className="course--title">{this.state.course.title}</h3>
-              <p>By {`${this.state.user.firstName} ${this.state.user.lastName}`}</p>
-            </div>
-            <div className="course--description">
-              <ReactMarkdown source={this.state.course.description} />
-            </div>
-          </div>
-          <div className="grid-25 grid-right">
-            <div className="course--stats">
-              <ul className="course--stats--list">
-                <li className="course--stats--list--item">
-                  <h4>Estimated Time</h4>
-                  <h3>{this.state.course.estimatedTime}</h3>
-                </li>
-                <li className="course--stats--list--item">
-                  <h4>Materials Needed</h4>
-                  <ReactMarkdown source={this.state.course.materialsNeeded} />
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        <CourseActionsBar
+          authenticatedUser={authenticatedUser}
+          user={user}
+          course={course}
+          deleteCourse={this.deleteCourse}
+        />
+        
+        <CourseDetailBody 
+          course={course}
+          user={user}
+        />
       </div>
     );
   }

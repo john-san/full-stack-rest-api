@@ -3,7 +3,11 @@
 // load modules, models, helpers
 const express = require('express');
 const { Course, User } = require('../models');
-const { asyncHandler, authenticateUser, courseValidationRules, validate } = require('../helpers');
+const { asyncHandler, 
+  authenticateUser, 
+  courseCreateValidationRules, 
+  courseUpdateValidationRules,
+  validate } = require('../helpers');
 
 // Construct a router instance.
 const router = express.Router();
@@ -54,13 +58,13 @@ router.get('/:id', asyncHandler(async (req, res) => {
 }));
 
 // POST /api/courses 201 - Creates a course, sets the Location header to the URI for the course, and returns no content
-router.post('/', authenticateUser, courseValidationRules(), validate, asyncHandler(async (req, res) => {
+router.post('/', authenticateUser, courseCreateValidationRules(), validate, asyncHandler(async (req, res) => {
   const newCourse = await Course.create(req.body);
   return res.status(201).location(`/courses/${newCourse.id}`).end();
 }));
 
 // PUT /api/courses/:id 204 - Updates a course and returns no content
-router.put('/:id', authenticateUser, courseValidationRules(), validate, asyncHandler(async (req, res) => {
+router.put('/:id', authenticateUser, courseUpdateValidationRules(), validate, asyncHandler(async (req, res) => {
   const course = await Course.findOne({ 
     where: { 
       id: req.params.id 
@@ -72,8 +76,10 @@ router.put('/:id', authenticateUser, courseValidationRules(), validate, asyncHan
     if (idMatch) {
       await course.update({
         title: req.body.title,
-        description: req.body.description
-      }, { fields: ['title', 'description'] });
+        description: req.body.description,
+        estimatedTime: req.body.estimatedTime,
+        materialsNeeded: req.body.materialsNeeded
+      }, { fields: ['title', 'description', 'estimatedTime', 'materialsNeeded'] });
       res.status(204).end();
     } else {
       res.status(403).json({ error: "You do not have permission to update this course." });
