@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
-const Header = (props) => {
-  const { context } = props;
-  const authUser = context.authenticatedUser;
+export default ({ context }) => {
+  const { authenticatedUser } = context;
   
   return (
     <div className="header">
@@ -11,21 +10,19 @@ const Header = (props) => {
         <h1 className="header--logo"><a href="/">Courses</a></h1>
         <nav>
           {
-            authUser ?
-              <React.Fragment>
-                <span>Welcome, {authUser.firstName}!</span>
+            authenticatedUser ?
+              <Fragment>
+                <span>Welcome, {authenticatedUser.firstName}!</span>
                 <Link className="signout" to="/signout">Sign Out</Link>
-              </React.Fragment>
+              </Fragment>
             :    
-              <React.Fragment>
+              <Fragment>
                 <Link className="signup" to="/signup">Sign Up</Link>
                 <Link className="signin" to="/signin">Sign In</Link>
-              </React.Fragment>
+              </Fragment>
           }
         </nav>
       </div>
     </div>
   )
 }
-
-export default Header;

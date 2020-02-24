@@ -4,7 +4,7 @@ import config from '../config';
 import CourseList from './subcomponents/CourseList';
 import NewCourseButton from './subcomponents/NewCourseButton';
 
-class Courses extends Component {
+export default class Courses extends Component {
   constructor() {
     super();
     this.state = {
@@ -32,5 +32,3 @@ class Courses extends Component {
   }
   
 }
-
-export default Courses;

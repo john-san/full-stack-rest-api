@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import config from '../config';
 import CourseActionsBar from './subcomponents/CourseActionsBar';
 import CourseDetailBody from './subcomponents/CourseDetailBody';
 
-class CourseDetail extends Component {
+export default class CourseDetail extends Component {
   constructor(props) {
     super(props);
     
@@ -21,7 +19,7 @@ class CourseDetail extends Component {
     try {
       const { id } = this.props.match.params;
       const { context } = this.props;
-      const currentCourse = await context.actions.loadCourse(id);
+      const currentCourse = await context.actions.getCourse(id);
       this.setState({ currentCourse , currentCourseOwner: currentCourse.User });
     } catch(err) {
       console.log(err);
@@ -32,14 +30,12 @@ class CourseDetail extends Component {
     try {
       const { id } = this.props.match.params;
       const { context } = this.props;
-      const { authenticatedUser } = context;
-
-      // const decoded = 
-      // currently using credntials: joe@smith.com | joepassword 
-      // const response = await context.actions
-        // .deleteCourse(id, authenticatedUser.emailAddress, 'joepassword');
-      // console.log("deleted ", response);
-      // this.props.history.push("/");
+      const { emailAddress, password } = context.authenticatedUser;
+      
+      const response = await context.actions
+        .deleteCourse(id, emailAddress, password);
+      console.log("deleted ", response);
+      this.props.history.push("/");
     } catch(err) {
       console.log(err);
     }
@@ -65,7 +61,4 @@ class CourseDetail extends Component {
       </div>
     );
   }
-  
 }
-
-export default CourseDetail;

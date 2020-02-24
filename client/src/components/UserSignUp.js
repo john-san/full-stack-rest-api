@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import UserForm from './subcomponents/UserForm';
 
-class UserSignUp extends Component {
+export default class UserSignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -139,5 +139,3 @@ class UserSignUp extends Component {
   }
   
 }
-
-export default UserSignUp;

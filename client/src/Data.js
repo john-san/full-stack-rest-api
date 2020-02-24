@@ -76,9 +76,60 @@ class Data {
     }
   }
 
+  async createCourse(course, emailAddress, password) {
+    try {
+      const response = await this.api(
+        '/courses',
+        'POST',
+        course,
+        true,
+        { emailAddress, password }
+      );
+      if (response.status === 201) {
+        return { status: 201 };
+      } else {
+        console.log(response);
+        throw new Error("Something went wrong while trying to create a new Course!");
+      }
+    } catch (err) {
+      // 400 === bad request, invalid data
+      console.log(err.toJSON());
+      return { status: 400, errors: err.response.data };
+    }
+  }
+
+  async updateCourse(course, emailAddress, password) {
+    try {
+      const id = course.id;
+      const response = await this.api(
+      `/courses/${id}`,
+        'PUT',
+        course,
+        true,
+        { emailAddress, password }
+      );
+      if (response.status === 204) {
+        return { status: 204 };
+      } else {
+        console.log(response);
+        throw new Error("Something went wrong while trying to update the Course!");
+      }
+    } catch (err) {
+      // 400 === bad request, invalid data
+      console.log(err.toJSON());
+      return { status: 400, errors: err.response.data };
+    }
+  }
+
   async deleteCourse(courseId, emailAddress, password) {
     try {
-      const response = await this.api(`/courses/${courseId}`, 'DELETE', null, true, { emailAddress, password });
+      const response = await this.api(
+        `/courses/${courseId}`,
+        'DELETE', 
+        null, 
+        true, 
+        { emailAddress, password }
+      );
       if (response.status === 204) {
         return response;
       }  else {

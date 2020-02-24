@@ -22,8 +22,10 @@ export class Provider extends Component {
       actions: { 
         signIn: this.signIn,
         signOut: this.signOut,
-        loadCourse: this.loadCourse,
-        deleteCourse: this.deleteCourse
+        getCourse: this.getCourse,
+        deleteCourse: this.deleteCourse,
+        createCourse: this.createCourse,
+        updateCourse: this.updateCourse
       }
     };
     
@@ -39,6 +41,9 @@ export class Provider extends Component {
     const user = await this.data.getUser(emailAddress, password);
     // if a user is found, add user to State + set cookie
     if (user !== null) {
+      // storing password in context for API calls..
+      // TODO: find a more secure way
+      user.password = password; 
       this.setState({ authenticatedUser: user });
       Cookies.set('authenticatedUser', JSON.stringify(user), { expires: 1 });
     }
@@ -51,12 +56,25 @@ export class Provider extends Component {
     Cookies.remove('authenticatedUser');
   }
 
-  // called by CourseDetail
-  loadCourse = async (id) => {
+  // called by CourseDetail & UpdateCourse
+  getCourse = async (id) => {
     const currentCourse = await this.data.getCourse(id);
     return currentCourse;
   }
 
+  // called by CreateCourse
+  createCourse = async (course, emailAddress, password) => {
+    const newCourse = await this.data.createCourse(course, emailAddress, password);
+    return newCourse;
+  }
+
+  // called by UpdateCourse
+  updateCourse = async (course, emailAddress, password) => {
+    const updatedCourse = await this.data.updateCourse(course, emailAddress, password);
+    return updatedCourse;
+  }
+
+  // called by CourseDetail
   deleteCourse = async (id, emailAddress, password) => {
     const response = await this.data.deleteCourse(id, emailAddress, password);
     return response;
