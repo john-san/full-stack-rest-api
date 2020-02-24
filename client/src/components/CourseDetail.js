@@ -19,7 +19,7 @@ export default class CourseDetail extends Component {
     try {
       const { id } = this.props.match.params;
       const { context } = this.props;
-      const currentCourse = await context.actions.getCourse(id);
+      const currentCourse = await context.data.getCourse(id);
       this.setState({ currentCourse , currentCourseOwner: currentCourse.User });
     } catch(err) {
       console.log(err);
@@ -32,7 +32,7 @@ export default class CourseDetail extends Component {
       const { context } = this.props;
       const { emailAddress, password } = context.authenticatedUser;
       
-      const response = await context.actions
+      const response = await context.data
         .deleteCourse(id, emailAddress, password);
       console.log("deleted ", response);
       this.props.history.push("/");

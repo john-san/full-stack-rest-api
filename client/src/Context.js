@@ -21,11 +21,7 @@ export class Provider extends Component {
       data: this.data,
       actions: { 
         signIn: this.signIn,
-        signOut: this.signOut,
-        getCourse: this.getCourse,
-        deleteCourse: this.deleteCourse,
-        createCourse: this.createCourse,
-        updateCourse: this.updateCourse
+        signOut: this.signOut
       }
     };
     
@@ -54,30 +50,6 @@ export class Provider extends Component {
   signOut = () => {
     this.setState({ authenticatedUser: null });
     Cookies.remove('authenticatedUser');
-  }
-
-  // called by CourseDetail & UpdateCourse
-  getCourse = async (id) => {
-    const currentCourse = await this.data.getCourse(id);
-    return currentCourse;
-  }
-
-  // called by CreateCourse
-  createCourse = async (course, emailAddress, password) => {
-    const newCourse = await this.data.createCourse(course, emailAddress, password);
-    return newCourse;
-  }
-
-  // called by UpdateCourse
-  updateCourse = async (course, emailAddress, password) => {
-    const updatedCourse = await this.data.updateCourse(course, emailAddress, password);
-    return updatedCourse;
-  }
-
-  // called by CourseDetail
-  deleteCourse = async (id, emailAddress, password) => {
-    const response = await this.data.deleteCourse(id, emailAddress, password);
-    return response;
   }
 }
 

@@ -21,7 +21,7 @@ export default class UpdateCourse extends Component {
     try {
       const { id } = this.props.match.params;
       const { context } = this.props;
-      const currentCourse = await context.actions.getCourse(id);
+      const currentCourse = await context.data.getCourse(id);
       this.setState({ 
         currentCourse, 
         currentCourseOwner: currentCourse.User,
@@ -65,9 +65,9 @@ export default class UpdateCourse extends Component {
         id: match.params.id
       };
 
-      const response = await context.actions.updateCourse(course, emailAddress, password);
+      const response = await context.data.updateCourse(course, emailAddress, password);
 
-      // Successful course creation
+      // Successful course update
       if (response.status === 204) {
         console.log('updated!', response);
         this.props.history.push('/');  

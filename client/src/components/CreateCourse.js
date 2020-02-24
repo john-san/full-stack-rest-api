@@ -45,7 +45,7 @@ export default class CreateCourse extends Component {
         userId
       };
 
-      const response = await context.actions.createCourse(course, emailAddress, password);
+      const response = await context.data.createCourse(course, emailAddress, password);
 
       // Successful course creation
       if (response.status === 201) {

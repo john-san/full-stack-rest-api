@@ -61,6 +61,7 @@ class Data {
     }
   }
 
+  // called by CourseDetail & UpdateCourse
   async getCourse(courseId) {
     try {
       const response = await this.api(`/courses/${courseId}`, 'GET');
@@ -76,6 +77,7 @@ class Data {
     }
   }
 
+  // called by CreateCourse
   async createCourse(course, emailAddress, password) {
     try {
       const response = await this.api(
@@ -98,6 +100,7 @@ class Data {
     }
   }
 
+  // called by UpdateCourse
   async updateCourse(course, emailAddress, password) {
     try {
       const id = course.id;
@@ -121,6 +124,7 @@ class Data {
     }
   }
 
+  // called by CourseDetail
   async deleteCourse(courseId, emailAddress, password) {
     try {
       const response = await this.api(
@@ -131,7 +135,7 @@ class Data {
         { emailAddress, password }
       );
       if (response.status === 204) {
-        return response;
+        return { status: 204};
       }  else {
         console.log(response);
         throw new Error("Something went wrong while trying to delete the course!");
