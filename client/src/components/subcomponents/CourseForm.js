@@ -62,7 +62,7 @@ class CourseForm extends Component {
 
 
   render() {
-    const { submitButtonText, course } = this.props;
+    const { submitButtonText, currentCourse } = this.props;
     const { errors } = this.state;
     return (
       <div>
@@ -79,7 +79,7 @@ class CourseForm extends Component {
                 className="input-title course--title--input" 
                 placeholder="Course title..." 
                 ref={this.title}
-                defaultValue={course ? course.title : ""}
+                defaultValue={currentCourse ? currentCourse.title : ""}
               />
               <p>By Joe Smith</p>
             </div>
@@ -90,7 +90,7 @@ class CourseForm extends Component {
                 name="description"  
                 placeholder="Course description..."
                 ref={this.description}
-                defaultValue={course ? course.description : ""}
+                defaultValue={currentCourse ? currentCourse.description : ""}
               >
               </textarea>
             </div>
@@ -108,7 +108,7 @@ class CourseForm extends Component {
                     className="course--time--input" 
                     placeholder="Hours" 
                     ref={this.estimatedTime}
-                    defaultValue={course ? course.estimatedTime : ""}
+                    defaultValue={currentCourse ? currentCourse.estimatedTime : ""}
                   />
                 </li>
                 <li className="course--stats--list--item">
@@ -118,7 +118,7 @@ class CourseForm extends Component {
                     name="materialsNeeded" 
                     placeholder="List materials..."
                     ref={this.materialsNeeded}
-                    defaultValue={course ? course.materialsNeeded : ""}
+                    defaultValue={currentCourse ? currentCourse.materialsNeeded : ""}
                   >
                   </textarea>
                 </li>

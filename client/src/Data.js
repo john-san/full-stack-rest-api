@@ -60,6 +60,36 @@ class Data {
       return { status: 400, errors: err.response.data };
     }
   }
+
+  async getCourse(courseId) {
+    try {
+      const response = await this.api(`/courses/${courseId}`, 'GET');
+      if (response.status === 200) {
+        return response.data;
+      }  else {
+        console.log(response);
+        throw new Error("Something went wrong while trying to get the course info!");
+      }
+    } catch(err) {
+      console.log(err.toJSON());
+      return null;
+    }
+  }
+
+  async deleteCourse(courseId, emailAddress, password) {
+    try {
+      const response = await this.api(`/courses/${courseId}`, 'DELETE', null, true, { emailAddress, password });
+      if (response.status === 204) {
+        return response;
+      }  else {
+        console.log(response);
+        throw new Error("Something went wrong while trying to delete the course!");
+      }
+    } catch(err) {
+      console.log(err.toJSON());
+      return null;
+    }
+  }
 }
 
 

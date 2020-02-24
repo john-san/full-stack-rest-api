@@ -21,7 +21,9 @@ export class Provider extends Component {
       data: this.data,
       actions: { 
         signIn: this.signIn,
-        signOut: this.signOut
+        signOut: this.signOut,
+        loadCourse: this.loadCourse,
+        deleteCourse: this.deleteCourse
       }
     };
     
@@ -47,6 +49,17 @@ export class Provider extends Component {
   signOut = () => {
     this.setState({ authenticatedUser: null });
     Cookies.remove('authenticatedUser');
+  }
+
+  // called by CourseDetail
+  loadCourse = async (id) => {
+    const currentCourse = await this.data.getCourse(id);
+    return currentCourse;
+  }
+
+  deleteCourse = async (id, emailAddress, password) => {
+    const response = await this.data.deleteCourse(id, emailAddress, password);
+    return response;
   }
 }
 

@@ -9,8 +9,8 @@ class CourseDetail extends Component {
     super(props);
     
     this.state = {
-      course: {},
-      user: {}
+      currentCourse: {},
+      currentCourseOwner: {}
     }
 
     this.getCourse();
@@ -18,45 +18,49 @@ class CourseDetail extends Component {
   }
 
   async getCourse() {
-    const { id } = this.props.match.params;
-    const { data } = await axios(config.apiBaseUrl + "/courses/" + id);
-    this.setState({ course: data , user: data.User });
+    try {
+      const { id } = this.props.match.params;
+      const { context } = this.props;
+      const currentCourse = await context.actions.loadCourse(id);
+      this.setState({ currentCourse , currentCourseOwner: currentCourse.User });
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   async deleteCourse() {
     try {
       const { id } = this.props.match.params;
-      const url = `${config.apiBaseUrl}/courses/${id}`;
-      const response = await axios.delete(url, {
-        auth: {
-          username: 'joe@smith.com',
-          password: 'joepassword'
-        }
-      });
+      const { context } = this.props;
+      const { authenticatedUser } = context;
 
-      console.log("deleted ", response);
-      this.props.history.push("/");
+      // const decoded = 
+      // currently using credntials: joe@smith.com | joepassword 
+      // const response = await context.actions
+        // .deleteCourse(id, authenticatedUser.emailAddress, 'joepassword');
+      // console.log("deleted ", response);
+      // this.props.history.push("/");
     } catch(err) {
       console.log(err);
     }
   }
 
   render() {
-    const { course, user } = this.state;
+    const { currentCourse, currentCourseOwner } = this.state;
     const { authenticatedUser } = this.props.context;
 
     return (
       <div>
         <CourseActionsBar
           authenticatedUser={authenticatedUser}
-          user={user}
-          course={course}
+          currentCourseOwner={currentCourseOwner}
+          currentCourse={currentCourse}
           deleteCourse={this.deleteCourse}
         />
         
         <CourseDetailBody 
-          course={course}
-          user={user}
+          currentCourse={currentCourse}
+          currentCourseOwner={currentCourseOwner}
         />
       </div>
     );

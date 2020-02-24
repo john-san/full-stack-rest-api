@@ -1,28 +1,32 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import config from '../config';
 import CourseForm from './subcomponents/CourseForm';
 
 class UpdateCourse extends Component {
   constructor(props) {
     super(props);
-    
     this.state = {
-      course: {},
-      user: {}
+      currentCourse: {},
+      currentCourseOwner: {}
     }
 
-    this.getCourse();
+   this.getCourse();
   }
 
   async getCourse() {
-    const { id } = this.props.match.params;
-    const { data } = await axios(config.apiBaseUrl + "/courses/" + id);
-    this.setState({ course: data , user: data.User });
+    try {
+      const { id } = this.props.match.params;
+      const { context } = this.props;
+      const currentCourse = await context.actions.loadCourse(id);
+      this.setState({ currentCourse , currentCourseOwner: currentCourse.User });
+    } catch(err) {
+      console.log(err);
+    }
   }
+
   render() {
     const { match, history } = this.props;
-    const { course } = this.state;
+    const { currentCourse } = this.state;
+
     return (
       <div className="bounds course--detail">
         <h1>Update Course</h1>
@@ -30,7 +34,7 @@ class UpdateCourse extends Component {
         <CourseForm 
           match={match} 
           history={history}
-          course={course}
+          currentCourse={currentCourse}
           submitButtonText="Update Course"
           method="put"
         />

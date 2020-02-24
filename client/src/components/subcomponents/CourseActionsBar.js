@@ -3,14 +3,17 @@ import { Link } from 'react-router-dom';
 
 export default ({
   authenticatedUser,
-  user,
-  course,
+  currentCourseOwner,
+  currentCourse,
   deleteCourse
 }) => {
+
   // check visitor's auth to make sure we display appropriate actions
   const isVisitorAuthorized = () => {
-    return authenticatedUser && authenticatedUser.id === user.id;
+    return authenticatedUser && authenticatedUser.id === currentCourseOwner.id;
   }
+
+  
 
   return (
     <div className="actions--bar">
@@ -20,7 +23,7 @@ export default ({
           {
             isVisitorAuthorized() &&
               <Fragment>
-                <Link className="button" to={`/courses/${course.id}/update`}>Update Course</Link>
+                <Link className="button" to={`/courses/${currentCourse.id}/update`}>Update Course</Link>
                 <button className="button" onClick={deleteCourse}>Delete Course</button>
               </Fragment>
           }
