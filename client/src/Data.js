@@ -31,10 +31,10 @@ class Data {
   async getUser(emailAddress, password) {
     try {
       const response = await this.api(`/users`, 'GET', null, true, { emailAddress, password });
+      // 200 === User exists.  Return user to Context's signIn()
       if (response.status === 200) {
-        console.log('success');
         return response.data;
-      } else {
+      } else { 
         console.log(response);
         throw new Error('Something went wrong while trying to retrieve User Data!');
       }
@@ -61,19 +61,34 @@ class Data {
     }
   }
 
+  // called by Courses
+  async getCourses() {
+    try {
+      // throw new Error('it broke');
+      const response = await this.api('/courses', 'GET');
+      return response;
+    } catch (err) {
+      console.log('i am here');
+      console.log(err);
+      return err;
+    }
+  }
+
   // called by CourseDetail & UpdateCourse
   async getCourse(courseId) {
     try {
       const response = await this.api(`/courses/${courseId}`, 'GET');
+
       if (response.status === 200) {
-        return response.data;
-      }  else {
+        return response;
+      } else {
         console.log(response);
         throw new Error("Something went wrong while trying to get the course info!");
       }
     } catch(err) {
-      console.log(err.toJSON());
-      return null;
+      // 404 === Not found
+      console.log(err);
+      return err.response;
     }
   }
 
@@ -95,6 +110,7 @@ class Data {
       }
     } catch (err) {
       // 400 === bad request, invalid data
+      
       console.log(err.toJSON());
       return { status: 400, errors: err.response.data };
     }
@@ -135,14 +151,14 @@ class Data {
         { emailAddress, password }
       );
       if (response.status === 204) {
-        return { status: 204};
+        return { status: 204 };
       }  else {
         console.log(response);
         throw new Error("Something went wrong while trying to delete the course!");
       }
     } catch(err) {
-      console.log(err.toJSON());
-      return null;
+      console.log(err);
+      return err;
     }
   }
 }

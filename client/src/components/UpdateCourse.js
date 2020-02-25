@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import CourseForm from './subcomponents/CourseForm';
 
 export default class UpdateCourse extends Component {
@@ -14,26 +14,43 @@ export default class UpdateCourse extends Component {
       errors: [],
     }
 
-   this.getCourse();
+    this.getCourse();
+  }
+
+  checkPermissions() {
+    const { currentCourseOwner } = this.state;
+    const { authenticatedUser } = this.props.context;
+    if (authenticatedUser.id !== currentCourseOwner.id) {
+      this.props.history.push('/forbidden');
+    }
   }
 
   async getCourse() {
     try {
       const { id } = this.props.match.params;
       const { context } = this.props;
-      const currentCourse = await context.data.getCourse(id);
-      this.setState({ 
-        currentCourse, 
-        currentCourseOwner: currentCourse.User,
-        title: currentCourse.title,
-        description: currentCourse.description,
-        estimatedTime: currentCourse.estimatedTime,
-        materialsNeeded: currentCourse.materialsNeeded
-      });
+      const response = await context.data.getCourse(id);
+
+      if (response.status === 200) {
+        const currentCourse = response.data;
+        this.setState({ 
+          currentCourse, 
+          currentCourseOwner: currentCourse.User,
+          title: currentCourse.title,
+          description: currentCourse.description,
+          estimatedTime: currentCourse.estimatedTime,
+          materialsNeeded: currentCourse.materialsNeeded
+        });
+        this.checkPermissions();
+      } else if (response.status === 404) {
+        this.props.history.push('/notfound');
+      }
+      
     } catch(err) {
       console.log(err);
     }
   }
+
 
   change = (e) => {
     const name = e.target.name;
@@ -75,7 +92,7 @@ export default class UpdateCourse extends Component {
       } else if (response.status === 400) {
         console.log('Uh oh', response);
         this.handleErrors(response.errors);
-      }
+      } 
     } catch(err) {
       console.log(err);
       this.props.history.push('/error');
@@ -93,6 +110,7 @@ export default class UpdateCourse extends Component {
   }
 
   render() {
+    
     const { change, submit, cancel } = this;  
     const {
       title,
@@ -105,22 +123,33 @@ export default class UpdateCourse extends Component {
 
     return (
       <div className="bounds course--detail">
-        <h1>Update Course</h1>
+      {
+        currentCourseOwner.hasOwnProperty("id") ?
+          <Fragment>
+            <h1>Update Course</h1>
 
-        <CourseForm 
-          change={change}
-          submit={submit}
-          cancel={cancel}
-          title={title}
-          description={description}
-          estimatedTime={estimatedTime}
-          materialsNeeded={materialsNeeded}
-          errors={errors}
-          submitButtonText="Update Course"
-          courseOwnerName={`${currentCourseOwner.firstName} ${currentCourseOwner.lastName}`}
-        />
+            <CourseForm 
+              change={change}
+              submit={submit}
+              cancel={cancel}
+              title={title}
+              description={description}
+              estimatedTime={estimatedTime}
+              materialsNeeded={materialsNeeded}
+              errors={errors}
+              submitButtonText="Update Course"
+              courseOwnerName={`${currentCourseOwner.firstName} ${currentCourseOwner.lastName}`}
+            />
+          </Fragment>
+
+        :
+          <Fragment>Loading</Fragment>
+      }
       </div>
+      
+            
+       
     );
-
+    
   }
 }
