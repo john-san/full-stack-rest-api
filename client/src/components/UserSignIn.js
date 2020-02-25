@@ -51,8 +51,9 @@ export default class UserSignIn extends Component {
     } = this.state;
 
     return (
-      <div className="bounds">
-        <div className="grid-33 centered signin">
+      
+      <div className="container">
+        <div className="col-md-6 offset-md-3 text-center signin">
           <h1>Sign In</h1>
           <UserForm 
             cancel={this.cancel}

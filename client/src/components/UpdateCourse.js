@@ -106,7 +106,8 @@ export default class UpdateCourse extends Component {
   }
 
   cancel = () => {
-    this.props.history.push('/');
+    const { id } =  this.state.currentCourse ;
+    this.props.history.push(`/courses/${id}/view`);
   }
 
   render() {
@@ -122,7 +123,7 @@ export default class UpdateCourse extends Component {
     } = this.state;
 
     return (
-      <div className="bounds course--detail">
+      <div className="container-fluid course--detail">
       {
         currentCourseOwner.hasOwnProperty("id") ?
           <Fragment>

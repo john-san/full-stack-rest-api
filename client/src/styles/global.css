@@ -1,3 +1,22 @@
+/* Google Fonts */
+/* font-family: 'Kosugi', ;
+font-family: 'Dosis', ; */
+@import url('https://fonts.googleapis.com/css?family=Dosis:800|Kosugi&display=swap');
+
+/* Vars */
+:root {
+  --title-font: 'Dosis', sans-serif;
+  --body-font: 'Kosuki', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: var(--title-font);
+}
+
+body,p,input {
+  font-family: var(--body-font);
+}
+
 /* line 7, ../sass/reset.sass */
 a,
 abbr,
@@ -201,8 +220,8 @@ svg {
 
 /* line 5, ../sass/global.sass */
 body {
-  font-family: "Work Sans", sans-serif;
   background: #fff;
+  font-size: 18px;
 }
 
 /* line 13, ../sass/global.sass */
@@ -215,7 +234,7 @@ body {
 .header--logo {
   color: #fff;
   font-size: 24px;
-  padding: 0 15px;
+  /* padding: 0 15px; */
   margin: 0;
   display: inline-block;
 }
@@ -223,6 +242,12 @@ body {
 .header--logo a {
   color: rgba(255, 255, 255, 0.5);
 }
+
+h1.header--logo > a {
+  color: #fff;
+}
+
+
 /* line 25, ../sass/global.sass */
 .header--logo a:hover {
   color: #fff;
@@ -242,6 +267,7 @@ body {
 .header nav {
   float: right;
   margin-top: 3px;
+  font-weight: 700;
 }
 /* line 37, ../sass/global.sass */
 .header nav a {
@@ -284,7 +310,7 @@ h1 {
 a {
   color: #7c689b;
   cursor: pointer;
-  text-decoration: none;
+  text-decoration: none !important;
   -webkit-transition: color 0.2s;
   -moz-transition: color 0.2s;
   -ms-transition: color 0.2s;
@@ -294,7 +320,6 @@ a {
 
 /* line 66, ../sass/global.sass */
 p {
-  font-family: "Cousine";
   margin-bottom: 30px;
 }
 
@@ -302,6 +327,7 @@ p {
 .bounds {
   max-width: 1250px;
   margin: 0 auto;
+  padding: 0 1.5%;
 }
 
 /* line 74, ../sass/global.sass */
@@ -341,13 +367,20 @@ p {
 .course--module {
   background: #7c689b;
   border-radius: 8px;
-  padding: 30px;
+  /* padding: 30px; */
+  padding-top: 20px;
+  text-align: center;
   margin-bottom: 30px;
-  min-height: 107px;
+  min-height: 100px;
   display: block;
   position: relative;
   box-sizing: border-box;
 }
+
+.course--module:hover:not(.course--add--module) {
+  filter: contrast(170%);
+}
+
 /* line 2, ../sass/mixins.sass */
 .course--module:before, .course--module:after {
   content: " ";
@@ -365,7 +398,6 @@ p {
 }
 /* line 116, ../sass/global.sass */
 .course--label {
-  font-family: "Cousine";
   font-size: 14px;
   font-weight: 100;
   color: rgba(255, 255, 255, 0.5);
@@ -446,7 +478,6 @@ p {
 .course--title--input {
   font-size: 48px;
   font-weight: bold;
-  font-family: "Work Sans", sans-serif;
 }
 /* line 186, ../sass/global.sass */
 .course--description {
@@ -475,7 +506,6 @@ p {
   border-top: 1px solid #ccc;
   font-size: 16px;
   line-height: 1.8;
-  font-family: "Cousine";
 }
 /* line 2, ../sass/mixins.sass */
 .course--description li:before, .course--description li:after {
@@ -514,7 +544,6 @@ p {
 .course--description h1,
 .course--description h2,
 .course--description h3 {
-  font-family: "Work Sans", sans-serif;
   color: #222;
   margin-bottom: 30px;
 }
@@ -540,7 +569,6 @@ p {
 }
 /* line 287, ../sass/global.sass */
 .course--stats--list h4 {
-  font-family: "Cousine";
   font-weight: 100;
   color: #999;
   font-size: 14px;
@@ -555,7 +583,6 @@ p {
 }
 /* line 300, ../sass/global.sass */
 .course--stats--list h3 {
-  font-family: "Work Sans", sans-serif;
   font-size: 18px;
 }
 /* line 303, ../sass/global.sass */
@@ -573,7 +600,6 @@ p {
 }
 /* line 311, ../sass/global.sass */
 .course--time--input {
-  font-family: "Work Sans", sans-serif;
   font-size: 18px;
   font-weight: bold;
   margin: 0;
@@ -598,7 +624,6 @@ textarea {
   color: #666;
   line-height: 1.8;
   outline: none;
-  font-family: "Cousine";
   box-sizing: border-box;
 }
 /* line 29, ../sass/mixins.sass */
@@ -680,7 +705,6 @@ input:focus {
 .button {
   background: #7c689b;
   color: #fff;
-  font-family: "Work Sans", sans-serif;
   font-size: 18px;
   padding: 15px 30px;
   border: 0;
@@ -702,7 +726,8 @@ input:focus {
 }
 /* line 522, ../sass/global.sass */
 .button:not(.button-secondary):hover {
-  background: #63537d;
+  /* background: #63537d; */
+  filter: contrast(170%);
 }
 
 /* line 525, ../sass/global.sass */
@@ -743,16 +768,24 @@ input:focus {
 }
 
 /* styles the validation errors */
+.validation-errors {
+  text-align: left;
+}
 .validation--errors--label {
   color: #7c689b;
   font-size: 28px;
 }
 .validation-errors ul {
   color: #7c689b;
-  padding: 15px 0 40px 10px;
+  padding: 15px 0 40px 0;
+  font-size: 14px;
 }
 
 /* reduce bottom margin on the course description textarea element */
 .course--description textarea {
   margin-bottom: 20px;
+}
+
+a:hover {
+  color: #fff;
 }

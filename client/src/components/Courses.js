@@ -28,13 +28,13 @@ export default class Courses extends Component {
     const { authenticatedUser } = this.props.context;
 
     return (
-      <div className="bounds">
+      <div className="container-fluid">
       {
-        courses.length > 0 ?
-          <Fragment>
+        courses ?
+          <div className="row">
             <CourseList courses={courses} />
             <NewCourseButton authenticatedUser={authenticatedUser} />
-          </Fragment>
+          </div>
           
         :
           <Fragment>Loading</Fragment>

@@ -84,9 +84,9 @@ export default class CreateCourse extends Component {
     const { authenticatedUser } = this.props.context;
     
     return (
-      <div className="bounds course--detail">
+      <div className="container-fluid course--detail">
         <h1>Create Course</h1>
-  
+        
         <CourseForm 
           change={change}
           submit={submit}

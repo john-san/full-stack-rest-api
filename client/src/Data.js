@@ -64,13 +64,10 @@ class Data {
   // called by Courses
   async getCourses() {
     try {
-      // throw new Error('it broke');
       const response = await this.api('/courses', 'GET');
       return response;
     } catch (err) {
-      console.log('i am here');
       console.log(err);
-      return err;
     }
   }
 
@@ -86,9 +83,7 @@ class Data {
         throw new Error("Something went wrong while trying to get the course info!");
       }
     } catch(err) {
-      // 404 === Not found
       console.log(err);
-      return err.response;
     }
   }
 
